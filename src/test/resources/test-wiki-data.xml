@@ -1,0 +1,44 @@
+<mediawiki xml:lang="en">
+    <page>
+        <title>AfghanistanGeography</title>
+        <ns>0</ns>
+        <id>14</id>
+        <redirect title="Geography of Afghanistan" />
+        <revision>
+            <id>407008307</id>
+            <parentid>74466619</parentid>
+            <timestamp>2011-01-10T03:56:19Z</timestamp>
+            <contributor>
+                <username>Graham87</username>
+                <id>194203</id>
+            </contributor>
+            <minor />
+            <comment>1 revision from [[:nost:AfghanistanGeography]]: import old edit, see [[User:Graham87/Import]]</comment>
+            <text xml:space="preserve">#REDIRECT [[Geography of Afghanistan]] {{R from CamelCase}}</text>
+            <sha1>0uwuuhiam59ufbu0uzt9lookwtx9f4r</sha1>
+            <model>wikitext</model>
+            <format>text/x-wiki</format>
+        </revision>
+    </page>
+    <page>
+        <title>AfghanistanPeople</title>
+        <ns>0</ns>
+        <id>15</id>
+        <redirect title="Demography of Afghanistan" />
+        <revision>
+            <id>135089040</id>
+            <parentid>74466558</parentid>
+            <timestamp>2007-06-01T13:59:37Z</timestamp>
+            <contributor>
+                <username>RussBot</username>
+                <id>279219</id>
+            </contributor>
+            <minor />
+            <comment>Robot: Fixing [[Special:DoubleRedirects|double-redirect]] -&quot;Demographics of Afghanistan&quot; +&quot;Demography of Afghanistan&quot;</comment>
+            <text xml:space="preserve">#REDIRECT [[Demography of Afghanistan]] {{R from CamelCase}}</text>
+            <sha1>744dgrl7ef5p53yffn2a989ly1dyr8f</sha1>
+            <model>wikitext</model>
+            <format>text/x-wiki</format>
+        </revision>
+    </page>
+</mediawiki>
