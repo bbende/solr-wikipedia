@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.solr.wikipedia.handler.CollectingPageHandler;
+import org.solr.wikipedia.handler.DefaultPageHandler;
 import org.solr.wikipedia.model.Page;
 import org.solr.wikipedia.util.WikiMediaTestData;
 
@@ -41,6 +42,27 @@ public class WikiMediaIteratorTest {
             testIterator(iterator, handler);
         }
     }
+
+//    @Test
+//    public void testIteratorFullFile() throws XMLStreamException, IOException {
+//        String testWikiXmlFile = "/Users/bryanbende/Data/Wikipedia/enwiki-latest-pages-articles.xml";
+//
+//        try (FileReader reader = new FileReader(testWikiXmlFile)) {
+//            DefaultPageHandler handler = new DefaultPageHandler();
+//
+//            Iterator<Page> iterator = new WikiMediaIterator<>(
+//                    reader, handler);
+//
+//            int count = 0;
+//            while (iterator.hasNext()) {
+//                Page page = iterator.next();
+//                System.out.println(page.getTitle());
+//                count++;
+//            }
+//
+//            System.out.println("DONE, total = " + count);
+//        }
+//    }
 
     @Test
     public void testIteratorWithBZipInputStream() throws XMLStreamException, IOException {

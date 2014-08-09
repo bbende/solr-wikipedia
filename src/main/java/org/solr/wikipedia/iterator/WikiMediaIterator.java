@@ -12,7 +12,9 @@ import java.util.Iterator;
 
 /**
  * An iterator that can process the given WikiMedia XML stream and
- * and return objects produced by the handler.
+ * and return objects produced by the handler. Clients can provide
+ * a custom PageHandler implementation, or use the DefaultPageHandler
+ * which produces Page objects.
  *
  * This class is not thread-safe and should only be used for single
  * threaded processing.
@@ -74,6 +76,7 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                 }
             }
         } catch (XMLStreamException e) {
+            //TODO incorporate a logging framework
             e.printStackTrace();
         }
 
@@ -86,8 +89,7 @@ public class WikiMediaIterator<T> implements Iterator<T> {
         currentPage = null;
 
         try {
-            String tagContent = null;
-
+            String elementText = null;
             while(reader.hasNext()) {
                 int event = reader.next();
                 switch (event) {
@@ -95,10 +97,10 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                         handleStartElement(reader.getLocalName());
                         break;
                     case XMLStreamConstants.CHARACTERS:
-                        tagContent = reader.getText().trim();
+                        elementText = reader.getText().trim();
                         break;
                     case XMLStreamConstants.END_ELEMENT:
-                        handleEndElement(reader.getLocalName(), tagContent);
+                        handleEndElement(reader.getLocalName(), elementText);
                         break;
                 }
 
@@ -108,6 +110,7 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                 }
             }
         } catch (XMLStreamException e) {
+            //TODO incorporate a logging framework
             e.printStackTrace();
         }
 
