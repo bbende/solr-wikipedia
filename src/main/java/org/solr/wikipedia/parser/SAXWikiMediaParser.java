@@ -18,7 +18,7 @@ import java.io.Reader;
  *
  * @author bryanbende
  */
-public class SAXWikiMediaXMLParser<T> implements WikiMediaXMLParser<T> {
+public class SAXWikiMediaParser<T> implements WikiMediaXMLParser<T> {
 
     @Override
     public void parse(Reader reader, PageHandler<T> handler) {
@@ -37,14 +37,6 @@ public class SAXWikiMediaXMLParser<T> implements WikiMediaXMLParser<T> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private enum PageElement {
-        page,
-        title,
-        revision,
-        text,
-        timestamp;
     }
 
     /**
