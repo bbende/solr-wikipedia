@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <luceneMatchVersion>LUCENE_4_9</luceneMatchVersion>
+
+    <dataDir>${solr.data.dir:}</dataDir>
+
+    <requestDispatcher handleSelect="false">
+        <httpCaching never304="true" />
+    </requestDispatcher>
+    <requestHandler name="/select" class="solr.SearchHandler" />
+    <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+    <requestHandler name="/admin" class="solr.admin.AdminHandlers" />
+    <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" startup="lazy" />
+
+    <!-- The default high-performance update handler -->
+    <updateHandler class="solr.DirectUpdateHandler2">
+        <updateLog>
+            <str name="dir">${solr.ulog.dir:}</str>
+        </updateLog>
+        <autoCommit>
+            <maxTime>${solr.autoCommit.maxTime:30000}</maxTime>
+            <openSearcher>false</openSearcher>
+        </autoCommit>
+        <autoSoftCommit>
+            <maxTime>${solr.autoSoftCommit.maxTime:5000}</maxTime>
+        </autoSoftCommit>
+    </updateHandler>
+
+</config>

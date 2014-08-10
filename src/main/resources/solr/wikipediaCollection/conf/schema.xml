@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema version="1.5" name="wikipedia">
+
+    <fieldType name="text_wiki" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <tokenizer class="solr.WikipediaTokenizerFactory"/>
+            <filter class="solr.StopFilterFactory"
+                    ignoreCase="true"
+                    words="lang/stopwords_en.txt"
+                    />
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.EnglishPossessiveFilterFactory"/>
+            <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+            <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+            <filter class="solr.EnglishMinimalStemFilterFactory"/> -->
+            <filter class="solr.PorterStemFilterFactory"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.StandardTokenizerFactory"/>
+            <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+            <filter class="solr.StopFilterFactory"
+                    ignoreCase="true"
+                    words="lang/stopwords_en.txt"
+                    />
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.EnglishPossessiveFilterFactory"/>
+            <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+            <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+            <filter class="solr.EnglishMinimalStemFilterFactory"/> -->
+            <filter class="solr.PorterStemFilterFactory"/>
+        </analyzer>
+    </fieldType>
+
+    <fieldType name="string" class="solr.StrField"/>
+    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+
+    <field name="id" type="string" indexed="true" stored="true" required="true"/>
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+    <field name="TITLE" type="text_wiki" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
+    <field name="REVISION_TEXT" type="text_wiki" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
+    <field name="REVISION_TIMESTAMP" type="date" indexed="true" stored="true" />
+
+    <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
+    <uniqueKey>id</uniqueKey>
+</schema>

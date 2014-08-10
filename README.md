@@ -1,6 +1,30 @@
 solr-wikipedia
 ==============
 
+# Quick-Start
+1. Download a Wikipedia dump file (http://en.wikipedia.org/wiki/Wikipedia:Database_download)
+
+2. Download Solr 4.9 and extract (http://lucene.apache.org/solr/)
+
+3. Configure environment variables
+* Set SOLR_HOME to the location Solr was extracted to in Step 2 + "example", for example:
+export SOLR_HOME=/var/local/solr/example
+* In your environment set JAVA_HOME to the location of your JDK.
+
+4. Clone and build code
+* git clone https://github.com/bbende/solr-wikipedia.git
+* cd solr-wikipedia
+* mvn clean package -Pshade
+
+5. Configure & start Solr
+* ./deploy-wikipedia-collection.sh (copies src/main/resource/solr/wikiepediaCollection to $SOLR_HOME/solr/)
+* src/main/resources/solr.sh start
+* Check http://localhost:8983/solr in your browser
+
+6. Ingest data (from solr-wikipedia dir)
+* java -jar target/solr-wikipeida-1.0-SNAPSHOT.jar http://localhost:8984/solr/wikipediaCollection /var/local/test-wiki-data.xml.bz2
+
+# Overview
 A collection of utilities for parsing WikiMedia XML dumps with the intent of indexing
 the content in Solr.
 
