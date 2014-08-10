@@ -11,26 +11,26 @@ the content in Solr.
 
 3. Configure environment variables
 
-Set SOLR_HOME to the location Solr was extracted to in Step 2 + "example", for example:
-export SOLR_HOME=/var/local/solr/example
+    Set SOLR_HOME to the location Solr was extracted to in Step 2 + "example", for example:
+    export SOLR_HOME=/var/local/solr/example
 
-Set JAVA_HOME to the location of your JDK.
+    Set JAVA_HOME to the location of your JDK.
 
 4. Clone and build code
 
-git clone https://github.com/bbende/solr-wikipedia.git
-cd solr-wikipedia
-mvn clean package -Pshade
+    git clone https://github.com/bbende/solr-wikipedia.git
+    cd solr-wikipedia
+    mvn clean package -Pshade
 
 5. Configure & start Solr
 
-./deploy-wikipedia-collection.sh (copies src/main/resource/solr/wikiepediaCollection to $SOLR_HOME/solr/)
-src/main/resources/solr.sh start
-Check http://localhost:8983/solr in your browser
+    ./deploy-wikipedia-collection.sh (copies src/main/resource/solr/wikiepediaCollection to $SOLR_HOME/solr/)
+    src/main/resources/solr.sh start
+    Check http://localhost:8983/solr in your browser
 
 6. Ingest data (from solr-wikipedia dir)
 
-java -jar target/solr-wikipeida-1.0-SNAPSHOT.jar http://localhost:8984/solr/wikipediaCollection /var/local/test-wiki-data.xml.bz2
+    java -jar target/solr-wikipeida-1.0-SNAPSHOT.jar http://localhost:8984/solr/wikipediaCollection /var/local/test-wiki-data.xml.bz2
 
 ## Overview
 
