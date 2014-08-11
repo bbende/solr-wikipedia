@@ -19,13 +19,17 @@ the content in Solr.
 4. Clone and build code
 
     git clone https://github.com/bbende/solr-wikipedia.git
+    
     cd solr-wikipedia
+    
     mvn clean package -Pshade
 
 5. Configure & start Solr
 
     ./deploy-wikipedia-collection.sh (copies src/main/resource/solr/wikiepediaCollection to $SOLR_HOME/solr/)
+    
     src/main/resources/solr.sh start
+    
     Check http://localhost:8983/solr in your browser
 
 6. Ingest data (from solr-wikipedia dir)
