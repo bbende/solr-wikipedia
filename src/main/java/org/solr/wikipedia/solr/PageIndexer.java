@@ -6,9 +6,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.solr.wikipedia.handler.CollectingPageHandler;
 import org.solr.wikipedia.handler.DefaultPageHandler;
 import org.solr.wikipedia.iterator.WikiMediaIterator;
 import org.solr.wikipedia.model.Page;
@@ -20,6 +18,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Indexes Pages in Solr.
@@ -28,17 +29,21 @@ import java.util.Iterator;
  */
 public class PageIndexer {
 
-    static final int DEFAULT_BATCH_SIZE = 10;
+    static final int DEFAULT_BATCH_SIZE = 20;
+    static final int DEFAULT_NUM_THREADS = 4;
 
-    private final SolrServer solrServer;
     private final int batchSize;
+    private final int numThreads;
+    private final SolrServer solrServer;
+
+    private ExecutorService executorService;
 
     /**
      *
      * @param solrServer
      */
     public PageIndexer(SolrServer solrServer) {
-        this(solrServer, DEFAULT_BATCH_SIZE);
+        this(solrServer, DEFAULT_BATCH_SIZE, DEFAULT_NUM_THREADS);
     }
 
     /**
@@ -46,13 +51,21 @@ public class PageIndexer {
      * @param solrServer
      * @param batchSize
      */
-    public PageIndexer(SolrServer solrServer, int batchSize) {
+    public PageIndexer(SolrServer solrServer, int batchSize, int numThreads) {
         this.solrServer = solrServer;
         this.batchSize = batchSize;
+        this.numThreads = numThreads;
+
         Validate.notNull(this.solrServer);
+
         if (this.batchSize <= 0) {
             throw new IllegalStateException("Batch size must be > 0");
         }
+        if (this.numThreads <= 0) {
+            throw new IllegalStateException("Num threads must be > 0");
+        }
+
+        this.executorService = Executors.newFixedThreadPool(numThreads);
     }
 
     /**
@@ -77,7 +90,9 @@ public class PageIndexer {
             solrDocs.add(doc);
 
             if (solrDocs.size() >= this.batchSize) {
-                solrServer.add(solrDocs);
+                List<SolrInputDocument> tempDocs = new ArrayList<>(solrDocs);
+                executorService.submit(new IndexerRunnable(
+                        solrServer, tempDocs));
                 solrDocs.clear();
             }
         }
@@ -99,9 +114,36 @@ public class PageIndexer {
         return doc;
     }
 
+    /**
+     * Runnable to add documents in a separate thread.
+     */
+    private class IndexerRunnable implements Runnable {
+
+        private final SolrServer solrServer;
+        private final List<SolrInputDocument> documents;
+
+        public IndexerRunnable(SolrServer solrServer,
+                               List<SolrInputDocument> documents) {
+            this.solrServer = solrServer;
+            this.documents = documents;
+        }
+
+        @Override
+        public void run() {
+            try {
+                solrServer.add(documents);
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Usage: PageIndexer <SOLR_URL> <WIKIPEDIA_DUMP_FILE>");
+            System.out.println("Usage: PageIndexer <SOLR_URL> <WIKIPEDIA_DUMP_FILE> " +
+                    "(<BATCH_SIZE> <NUM_THREADS>)");
             System.exit(0);
         }
 
@@ -111,6 +153,23 @@ public class PageIndexer {
         Validate.notEmpty(solrUrl);
         Validate.notEmpty(wikimediaDumpFile);
 
+        // attempt to parse a provided batch size and number of threads
+        Integer batchSize = null;
+        Integer numThreads = null;
+
+        if (args.length == 4) {
+            try {
+                batchSize = Integer.valueOf(args[2]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                numThreads = Integer.valueOf(args[3]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         try (FileInputStream fileIn = new FileInputStream(wikimediaDumpFile);
              BZip2CompressorInputStream bzipIn = new BZip2CompressorInputStream(fileIn);
              InputStreamReader reader = new InputStreamReader(bzipIn)) {
@@ -119,7 +178,11 @@ public class PageIndexer {
                     reader, new DefaultPageHandler());
 
             SolrServer solrServer = new HttpSolrServer(solrUrl);
-            PageIndexer pageIndexer = new PageIndexer(solrServer);
+
+            PageIndexer pageIndexer = (batchSize != null && numThreads != null ?
+                    new PageIndexer(solrServer, batchSize, numThreads) :
+                    new PageIndexer(solrServer));
+
             pageIndexer.index(iterator);
 
         } catch (IOException e) {
