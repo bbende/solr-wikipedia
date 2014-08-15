@@ -61,6 +61,9 @@ public class Page {
         return "Page [title = " + title + "]";
     }
 
+    /**
+     * A builder for Page instances.
+     */
     public static class PageBuilder {
         private String title;
         private List<Revision> revisions;

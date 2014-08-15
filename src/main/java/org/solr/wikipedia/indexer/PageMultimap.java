@@ -1,4 +1,4 @@
-package org.solr.wikipedia.solr;
+package org.solr.wikipedia.indexer;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

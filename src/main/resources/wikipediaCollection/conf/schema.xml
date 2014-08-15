@@ -12,7 +12,7 @@
             <filter class="solr.EnglishPossessiveFilterFactory"/>
             <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
             <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/> -->
+            <filter class="indexer.EnglishMinimalStemFilterFactory"/> -->
             <filter class="solr.PorterStemFilterFactory"/>
         </analyzer>
         <analyzer type="query">
@@ -26,7 +26,7 @@
             <filter class="solr.EnglishPossessiveFilterFactory"/>
             <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
             <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/> -->
+            <filter class="indexer.EnglishMinimalStemFilterFactory"/> -->
             <filter class="solr.PorterStemFilterFactory"/>
         </analyzer>
     </fieldType>

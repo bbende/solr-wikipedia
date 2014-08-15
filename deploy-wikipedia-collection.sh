@@ -1,4 +1,4 @@
 #!/bin/sh
 
 rm -rf $SOLR_HOME/solr/wikipediaCollection
-cp -R src/main/resources/solr/wikipediaCollection $SOLR_HOME/solr/
+cp -R src/main/resources/wikipediaCollection $SOLR_HOME/solr/

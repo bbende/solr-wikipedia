@@ -1,4 +1,4 @@
-package org.solr.wikipedia.solr;
+package org.solr.wikipedia.indexer;
 
 /**
  * Enumeration of fields to index and search in Solr.

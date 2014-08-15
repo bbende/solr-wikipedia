@@ -1,15 +1,16 @@
-package org.solr.wikipedia.solr;
+package org.solr.wikipedia.indexer;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrInputDocument;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.solr.wikipedia.handler.CollectingPageHandler;
 import org.solr.wikipedia.handler.DefaultPageHandler;
+import org.solr.wikipedia.iterator.SolrInputDocPageIterator;
 import org.solr.wikipedia.iterator.WikiMediaIterator;
 import org.solr.wikipedia.model.Page;
 import org.solr.wikipedia.util.EmbeddedSolrServerFactory;
@@ -22,16 +23,21 @@ import java.util.Iterator;
 /**
  * @author bryanbende
  */
-public class PageIndexerTest {
+public class DefaultIndexerTest {
 
     private SolrServer solrServer;
 
-    private PageIndexer pageIndexer;
+    private DefaultIndexer defaultIndexer;
 
     @Before
     public void setup() {
         this.solrServer = EmbeddedSolrServerFactory.create("wikipediaCollection");
-        this.pageIndexer = new PageIndexer(solrServer);
+        this.defaultIndexer = new DefaultIndexer(solrServer);
+    }
+
+    @After
+    public void after() {
+        this.solrServer.shutdown();
     }
 
     @Test
@@ -39,10 +45,13 @@ public class PageIndexerTest {
         String testWikiXmlFile = "src/test/resources/test-wiki-data.xml";
 
         try (FileReader reader = new FileReader(testWikiXmlFile)) {
-            Iterator<Page> iterator = new WikiMediaIterator<>(
+            Iterator<Page> pageIter = new WikiMediaIterator<>(
                     reader, new DefaultPageHandler());
 
-            pageIndexer.index(iterator);
+            Iterator<SolrInputDocument> docIter =
+                    new SolrInputDocPageIterator(pageIter);
+
+            defaultIndexer.index(docIter);
             solrServer.commit();
         }
 

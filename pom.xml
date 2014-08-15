@@ -94,7 +94,7 @@
                                 <configuration>
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>org.solr.wikipedia.solr.PageIndexer</mainClass>
+                                            <mainClass>org.solr.wikipedia.indexer.DefaultIndexer</mainClass>
                                         </transformer>
                                     </transformers>
                                 </configuration>
