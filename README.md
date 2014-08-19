@@ -34,7 +34,7 @@ the content in Solr.
 
 6. Ingest data (from solr-wikipedia dir)
 
-    java -jar target/solr-wikipeida-1.0-SNAPSHOT.jar http://localhost:8984/solr/wikipediaCollection /var/local/test-wiki-data.xml.bz2
+    java -jar target/solr-wikipeida-1.0-SNAPSHOT.jar http://localhost:8983/solr/wikipediaCollection /var/local/test-wiki-data.xml.bz2
 
 ## Overview
 
