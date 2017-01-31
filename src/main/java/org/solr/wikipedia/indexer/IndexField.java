@@ -10,6 +10,8 @@ public enum IndexField {
     id,
     TITLE,
     REVISION_TIMESTAMP,
-    REVISION_TEXT;
+    REVISION_TEXT,
+    CONTRIBUTOR_ID,
+    CONTRIBUTOR_USERNAME;
 
 }

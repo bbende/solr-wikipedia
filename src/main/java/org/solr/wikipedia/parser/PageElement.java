@@ -11,6 +11,9 @@ public enum PageElement {
     title,
     revision,
     text,
-    timestamp;
+    timestamp,
+    contributor,
+    id,
+    username;
 
 }

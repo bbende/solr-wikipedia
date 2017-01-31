@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import org.apache.commons.lang3.Validate;
 import org.solr.wikipedia.model.Page;
 import org.solr.wikipedia.model.Revision;
+import org.solr.wikipedia.model.Contributor;
 
 import java.util.UUID;
 
@@ -31,6 +32,12 @@ public class PageMultimap {
         for(Revision rev : page.getRevisions()) {
             multimap.put(IndexField.REVISION_TIMESTAMP.name(), rev.getTimestamp());
             multimap.put(IndexField.REVISION_TEXT.name(), rev.getText());
+            for(Contributor cont : rev.getContributors()) {
+            	multimap.put(IndexField.CONTRIBUTOR_ID.name(), cont.getId());
+            	if (cont.getUsername() != null) {
+            		multimap.put(IndexField.CONTRIBUTOR_USERNAME.name(), cont.getUsername());
+            	}
+            }
         }
 
         return multimap;

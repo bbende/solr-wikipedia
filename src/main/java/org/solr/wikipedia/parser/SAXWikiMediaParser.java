@@ -67,6 +67,9 @@ public class SAXWikiMediaParser<T> implements WikiMediaXMLParser<T> {
                     case revision:
                         handler.startRevision();
                         break;
+                    case contributor:
+                        handler.startContributor();
+                        break;
                     default:
                         break;
                 }
@@ -86,6 +89,9 @@ public class SAXWikiMediaParser<T> implements WikiMediaXMLParser<T> {
                     case revision:
                         handler.endRevision();
                         break;
+                    case contributor:
+                        handler.endContributor();
+                        break;
                     case title:
                         String title = buffer.toString();
                         handler.title(title.trim());
@@ -97,6 +103,14 @@ public class SAXWikiMediaParser<T> implements WikiMediaXMLParser<T> {
                     case timestamp:
                         String timestamp = buffer.toString();
                         handler.timestamp(timestamp);
+                        break;
+                    case id:
+                        String id = buffer.toString();
+                        handler.id(id.trim());
+                        break;
+                    case username:
+                        String username = buffer.toString();
+                        handler.username(username.trim());
                         break;
                     default:
                         break;

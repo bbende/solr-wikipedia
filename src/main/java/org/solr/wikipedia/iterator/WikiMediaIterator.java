@@ -133,6 +133,9 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                 case revision:
                     handler.startRevision();
                     break;
+                case contributor:
+                	handler.startContributor();
+                	break;
                 default:
                     break;
             }
@@ -152,6 +155,9 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                 case revision:
                     handler.endRevision();
                     break;
+                case contributor:
+                	handler.endContributor();
+                	break;
                 case title:
                     handler.title(elementText);
                     break;
@@ -160,6 +166,12 @@ public class WikiMediaIterator<T> implements Iterator<T> {
                     break;
                 case timestamp:
                     handler.timestamp(elementText);
+                    break;
+                case id:
+                    handler.id(elementText);
+                    break;
+                case username:
+                    handler.username(elementText);
                     break;
                 default:
                     break;

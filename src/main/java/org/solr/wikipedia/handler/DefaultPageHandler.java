@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 
 import static org.solr.wikipedia.model.Page.PageBuilder;
 import static org.solr.wikipedia.model.Revision.RevisionBuilder;
+import static org.solr.wikipedia.model.Contributor.ContributorBuilder;
 
 public class DefaultPageHandler implements PageHandler<Page> {
 
@@ -17,6 +18,8 @@ public class DefaultPageHandler implements PageHandler<Page> {
     private PageBuilder pageBuilder;
 
     private RevisionBuilder revisionBuilder;
+    
+    private ContributorBuilder contributorBuilder;
 
     @Override
     public void startPage() {
@@ -53,6 +56,30 @@ public class DefaultPageHandler implements PageHandler<Page> {
     @Override
     public void endRevision() {
         pageBuilder.revision(revisionBuilder.build());
+        revisionBuilder = null;
+    }
+    
+    @Override
+    public void startContributor() {
+    	contributorBuilder = new ContributorBuilder();
+    }
+
+    @Override
+    public void id(String id) {
+        if (contributorBuilder != null) {
+        	contributorBuilder.id(Integer.parseInt(id));
+        }
+    }
+
+    @Override
+    public void username(String username) {
+    	contributorBuilder.username(username);
+    }
+
+    @Override
+    public void endContributor() {
+    	revisionBuilder.contributor(contributorBuilder.build());
+    	contributorBuilder = null;
     }
 
     @Override
