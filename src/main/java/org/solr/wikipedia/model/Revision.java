@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a single revision of a page in the WikiMedia XML.
@@ -14,14 +16,18 @@ import java.util.Date;
 public class Revision {
 
     private final Date timestamp;
+    
+    private final List<Contributor> contributors;
 
     private final String text;
 
     private Revision(RevisionBuilder builder) {
         this.timestamp = builder.timestamp;
         this.text = builder.text;
+        this.contributors = builder.contributors;
         Validate.notNull(this.timestamp);
         Validate.notNull(this.text);
+        Validate.notEmpty(this.contributors);
     }
 
     public Date getTimestamp() {
@@ -31,12 +37,17 @@ public class Revision {
     public String getText() {
         return text;
     }
+    
+    public List<Contributor> getContributors() {
+        return this.contributors;
+    }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).
                 append(text).
                 append(timestamp).
+                append(contributors).
                 toHashCode();
     }
 
@@ -52,6 +63,7 @@ public class Revision {
         return new EqualsBuilder()
                 .append(this.text, that.text)
                 .append(this.timestamp, that.timestamp)
+                .append(this.contributors, that.contributors)
                 .isEquals();
     }
 
@@ -59,6 +71,7 @@ public class Revision {
     public static class RevisionBuilder {
         private Date timestamp;
         private String text;
+        private List<Contributor> contributors;
 
         public RevisionBuilder timestamp(Date date) {
             this.timestamp = date;
@@ -67,6 +80,14 @@ public class Revision {
 
         public RevisionBuilder text(String text) {
             this.text = text;
+            return this;
+        }
+        
+        public RevisionBuilder contributor(Contributor contributor) {
+            if (this.contributors == null) {
+                this.contributors = new ArrayList<>();
+            }
+            this.contributors.add(contributor);
             return this;
         }
 

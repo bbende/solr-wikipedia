@@ -13,6 +13,14 @@ public interface PageHandler<T> {
     public void text(String text);
 
     public void endRevision();
+    
+    public void startContributor();
+
+    public void id(String id);
+
+    public void username(String username);
+
+    public void endContributor();
 
     public T endPage();
 

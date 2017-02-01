@@ -43,6 +43,8 @@
     <field name="TITLE" type="text_wiki" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
     <field name="REVISION_TEXT" type="text_wiki" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" />
     <field name="REVISION_TIMESTAMP" type="date" indexed="true" stored="true" multiValued="true" />
+    <field name="CONTRIBUTOR_ID" type="int" indexed="true" stored="true" multiValued="true" />
+    <field name="CONTRIBUTOR_USERNAME" type="string" indexed="true" docValues="true" stored="true" multiValued="true" />
 
     <dynamicField name="*" type="string" indexed="true" stored="true" multiValued="true"/>
     <uniqueKey>id</uniqueKey>

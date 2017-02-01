@@ -9,7 +9,6 @@
     </requestDispatcher>
     <requestHandler name="/select" class="solr.SearchHandler" />
     <requestHandler name="/update" class="solr.UpdateRequestHandler" />
-    <requestHandler name="/admin" class="solr.admin.AdminHandlers" />
     <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" startup="lazy" />
 
     <!-- The default high-performance update handler -->
