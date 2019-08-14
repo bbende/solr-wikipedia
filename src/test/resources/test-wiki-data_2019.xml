@@ -1,0 +1,85 @@
+<mediawiki xml:lang="en">
+  <siteinfo>
+    <sitename>Wikinews</sitename>
+    <dbname>enwikinews</dbname>
+    <base>https://en.wikinews.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.34.0-wmf.15</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter"/>
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Wikinews</namespace>
+      <namespace key="5" case="first-letter">Wikinews talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="90" case="first-letter">Thread</namespace>
+      <namespace key="91" case="first-letter">Thread talk</namespace>
+      <namespace key="92" case="first-letter">Summary</namespace>
+      <namespace key="93" case="first-letter">Summary talk</namespace>
+      <namespace key="100" case="first-letter">Portal</namespace>
+      <namespace key="101" case="first-letter">Portal talk</namespace>
+      <namespace key="102" case="first-letter">Comments</namespace>
+      <namespace key="103" case="first-letter">Comments talk</namespace>
+      <namespace key="828" case="first-letter">Module</namespace>
+      <namespace key="829" case="first-letter">Module talk</namespace>
+      <namespace key="2300" case="first-letter">Gadget</namespace>
+      <namespace key="2301" case="first-letter">Gadget talk</namespace>
+      <namespace key="2302" case="case-sensitive">Gadget definition</namespace>
+      <namespace key="2303" case="case-sensitive">Gadget definition talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>AfghanistanGeography</title>
+    <ns>0</ns>
+    <id>14</id>
+    <redirect title="Geography of Afghanistan" />
+    <revision>
+      <id>407008307</id>
+      <parentid>74466619</parentid>
+      <timestamp>2011-01-10T03:56:19Z</timestamp>
+      <contributor>
+        <username>Graham87</username>
+        <id>194203</id>
+      </contributor>
+      <minor />
+      <comment>1 revision from [[:nost:AfghanistanGeography]]: import old edit, see [[User:Graham87/Import]]</comment>
+      <text xml:space="preserve">#REDIRECT [[Geography of Afghanistan]] {{R from CamelCase}}</text>
+      <sha1>0uwuuhiam59ufbu0uzt9lookwtx9f4r</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+  <page>
+    <title>AfghanistanPeople</title>
+    <ns>0</ns>
+    <id>15</id>
+    <redirect title="Demography of Afghanistan" />
+    <revision>
+      <id>135089040</id>
+      <parentid>74466558</parentid>
+      <timestamp>2007-06-01T13:59:37Z</timestamp>
+      <contributor>
+        <username>RussBot</username>
+        <id>279219</id>
+      </contributor>
+      <minor />
+      <comment>Robot: Fixing [[Special:DoubleRedirects|double-redirect]] -&quot;Demographics of Afghanistan&quot; +&quot;Demography of Afghanistan&quot;</comment>
+      <text xml:space="preserve">#REDIRECT [[Demography of Afghanistan]] {{R from CamelCase}}</text>
+      <sha1>744dgrl7ef5p53yffn2a989ly1dyr8f</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>

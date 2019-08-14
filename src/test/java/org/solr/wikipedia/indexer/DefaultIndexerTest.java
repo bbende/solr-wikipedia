@@ -60,4 +60,24 @@ public class DefaultIndexerTest {
         Assert.assertEquals(2, response.getResults().size());
     }
 
+    @Test
+    public void testIndexPages2019Dump() throws IOException, XMLStreamException, SolrServerException {
+        String testWikiXmlFile = "src/test/resources/test-wiki-data_2019.xml";
+
+        try (FileReader reader = new FileReader(testWikiXmlFile)) {
+            Iterator<Page> pageIter = new WikiMediaIterator<>(
+                reader, new DefaultPageHandler());
+
+            Iterator<SolrInputDocument> docIter =
+                new SolrInputDocPageIterator(pageIter);
+
+            defaultIndexer.index(docIter);
+            solrServer.commit();
+        }
+
+        SolrQuery solrQuery = new SolrQuery("*:*");
+        QueryResponse response = solrServer.query(solrQuery);
+        Assert.assertEquals(2, response.getResults().size());
+    }
+
 }
