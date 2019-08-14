@@ -74,6 +74,11 @@ public class DefaultIndexer {
         while (docs.hasNext()) {
             SolrInputDocument doc = docs.next();
 
+            for(String fieldName: doc.getFieldNames()) {
+                SolrInputField field = doc.getField(fieldName);
+                field.setName(field.getName().toLowerCase());
+            }
+
             solrDocs.add(doc);
 
             if (solrDocs.size() >= this.batchSize) {
