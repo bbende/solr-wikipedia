@@ -1,12 +1,17 @@
 package org.solr.wikipedia.indexer;
 
 import com.google.common.collect.Multimap;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.lang3.Validate;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
+import org.omg.SendingContext.RunTime;
 import org.solr.wikipedia.handler.DefaultPageHandler;
 import org.solr.wikipedia.iterator.SolrInputDocPageIterator;
 import org.solr.wikipedia.iterator.WikiMediaIterator;
@@ -55,12 +60,9 @@ public class DefaultIndexer {
     }
 
     /**
-     * Iterates over docs adding each SolrInputDocument to the given SolrServer
-     * in batches.
+     * Iterates over docs adding each SolrInputDocument to the given SolrServer in batches.
      *
-     * @param docs
-     * @throws IOException
-     * @throws SolrServerException
+     * @throws SolrServerException Iterates over docs adding each SolrInputDocument to the given SolrServer in batches.
      */
     public void index(Iterator<SolrInputDocument> docs) throws IOException, SolrServerException {
         if (docs == null) {
@@ -69,8 +71,9 @@ public class DefaultIndexer {
 
         long count = 0;
         Collection<SolrInputDocument> solrDocs = new ArrayList<>();
-        while(docs.hasNext()) {
+        while (docs.hasNext()) {
             SolrInputDocument doc = docs.next();
+
             solrDocs.add(doc);
 
             if (solrDocs.size() >= this.batchSize) {
@@ -91,7 +94,7 @@ public class DefaultIndexer {
     public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Usage: DefaultIndexer <SOLR_URL> <WIKIPEDIA_DUMP_FILE> " +
-                    "(<BATCH_SIZE>)");
+                "(<BATCH_SIZE>)");
             System.exit(0);
         }
 
@@ -111,34 +114,53 @@ public class DefaultIndexer {
             }
         }
 
-        try (FileInputStream fileIn = new FileInputStream(wikimediaDumpFile);
-             BZip2CompressorInputStream bzipIn = new BZip2CompressorInputStream(fileIn);
-             InputStreamReader reader = new InputStreamReader(bzipIn)) {
-
-            Iterator<Page> pageIter = new WikiMediaIterator<>(
+        // TODO extract this part from main to enable unit-testing
+        try (FileInputStream fileIn = new FileInputStream(wikimediaDumpFile)) {
+            InputStream input = null;
+            String extension = wikimediaDumpFile.substring(wikimediaDumpFile.length() - 4);
+            switch (extension) {
+                case ".xml":
+                    input = fileIn;
+                    break;
+                case ".bz2":
+                    input = new BZip2CompressorInputStream(fileIn);
+                    break;
+                case ".gz":
+                    input = new GZIPInputStream(fileIn);
+                    break;
+                default:
+                    throw new RuntimeException("Currently can only process BZ2, GZ or raw XML dump, not [" + extension + ".]");
+            }
+            try (InputStreamReader reader = new InputStreamReader(input)) {
+                Iterator<Page> pageIter = new WikiMediaIterator<>(
                     reader, new DefaultPageHandler());
 
-            Iterator<SolrInputDocument> docIter =
+                Iterator<SolrInputDocument> docIter =
                     new SolrInputDocPageIterator(pageIter);
 
-            SolrServer solrServer = new HttpSolrServer(solrUrl);
+                SolrServer solrServer = new HttpSolrServer(solrUrl);
 
-            DefaultIndexer defaultIndexer = (batchSize != null ?
+                DefaultIndexer defaultIndexer = (batchSize != null ?
                     new DefaultIndexer(solrServer, batchSize) :
                     new DefaultIndexer(solrServer));
 
-            long startTime = System.currentTimeMillis();
+                long startTime = System.currentTimeMillis();
 
-            defaultIndexer.index(docIter);
+                defaultIndexer.index(docIter);
 
-            System.out.println("Indexing finished at " + new Date());
-            System.out.println("Took " + (System.currentTimeMillis() - startTime) + " ms");
+                System.out.println("Indexing finished at " + new Date());
+                System.out.println("Took " + (System.currentTimeMillis() - startTime) + " ms");
+            } catch (XMLStreamException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            } finally {
+                input.close();
+            }
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        } catch (SolrServerException e) {
             e.printStackTrace();
         }
     }
